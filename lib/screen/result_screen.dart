@@ -66,10 +66,8 @@ class _ResultScreenState extends State<ResultScreen> {
                           ))),
                       Spacer(flex: 1),
                       Row(
-
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-
                           Icon(
                             Icons.refresh,
                             color: Colors.white,
@@ -83,7 +81,6 @@ class _ResultScreenState extends State<ResultScreen> {
                                   fontSize: 15,
                                 ))),
                           ),
-
                         ],
                       ),
                       Spacer(flex: 2),
@@ -92,30 +89,27 @@ class _ResultScreenState extends State<ResultScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-
                             Text(
                               currencyInventory.baseCurrency +
                                   " Value: 1 " +
                                   currencyInventory.baseCurrency,
-                              style: TextStyle(color: Colors.white, fontSize: 18,
-                              fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
                             ),
-
                             GestureDetector(
                                 onTap: () {
                                   int count = 0;
                                   Navigator.popUntil(context, (route) {
                                     return count++ == 2;
                                   });
-                                  //Navigator.popUntil(context, ModalRoute.withName(Router.baseCurrencyRoute));
-                                  // Navigator.of(context).popUntil((route) => route.settings.name == Router.baseCurrencyRoute);
                                 },
                                 child: Text(
                                   "Edit Base Currency",
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 18),
                                 )),
-
                           ],
                         ),
                       ),
@@ -130,12 +124,12 @@ class _ResultScreenState extends State<ResultScreen> {
                             Expanded(
                               child: Text(
                                 "Today's Value",
-                                style:
-                                    TextStyle(color: Colors.white, fontSize: 18,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.bold),
                               ),
                             ),
-
                             Expanded(
                               child: GestureDetector(
                                 onTap: () {
@@ -148,11 +142,9 @@ class _ResultScreenState extends State<ResultScreen> {
                                 ),
                               ),
                             ),
-
                           ],
                         ),
                       ),
-
                       ListView.builder(
                         shrinkWrap: true,
                         itemCount: compareCurrencyList.length,
@@ -174,7 +166,8 @@ class _ResultScreenState extends State<ResultScreen> {
                       Spacer(flex: 3),
                       GestureDetector(
                         onTap: () {
-                          GoogleSignIn googleAccount = currencyInventory.googleAccount;
+                          GoogleSignIn googleAccount =
+                              currencyInventory.googleAccount;
                           googleAccount.signOut();
                           Navigator.popUntil(context, (route) => route.isFirst);
                         },

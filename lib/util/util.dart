@@ -6,7 +6,6 @@ class Util {
     return _validCurrencies.contains(currency.toUpperCase());
   }
 
-
   static List<String> _validCurrencies = [
     "CAD",
     "HKD",

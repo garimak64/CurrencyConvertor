@@ -13,8 +13,6 @@ class SelectedCurrencyScreen extends StatefulWidget {
 class _SelectedCurrencyScreenState extends State<SelectedCurrencyScreen> {
   final TextEditingController _selectedCurrencyController =
       new TextEditingController();
-  final Key scaffoldKey = Key("showSnackBar");
-
   bool _inValid = false;
   String errMsg = "";
 
@@ -24,7 +22,6 @@ class _SelectedCurrencyScreenState extends State<SelectedCurrencyScreen> {
         Provider.of<CurrencyInventory>(context);
     return Scaffold(
       backgroundColor: Colors.indigo,
-      key: scaffoldKey,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
@@ -35,7 +32,9 @@ class _SelectedCurrencyScreenState extends State<SelectedCurrencyScreen> {
                 color: Colors.white,
                 fontSize: 35,
               ))),
-          Spacer(flex: 1,),
+          Spacer(
+            flex: 1,
+          ),
           Text("CURRENCY CONVERTER",
               style: GoogleFonts.mcLaren(
                   textStyle: TextStyle(
@@ -44,7 +43,7 @@ class _SelectedCurrencyScreenState extends State<SelectedCurrencyScreen> {
               ))),
           Spacer(flex: 2),
           Padding(
-            padding: const EdgeInsets.only(right:140.0),
+            padding: const EdgeInsets.only(right: 140.0),
             child: Text("Base Currency: " + currencyInventory.baseCurrency,
                 style: GoogleFonts.lato(
                   textStyle: TextStyle(
@@ -56,7 +55,7 @@ class _SelectedCurrencyScreenState extends State<SelectedCurrencyScreen> {
           ),
           Spacer(flex: 1),
           Padding(
-            padding: const EdgeInsets.only(right:130.0),
+            padding: const EdgeInsets.only(right: 130.0),
             child: Text("Currencies to compare",
                 style: GoogleFonts.lato(
                   textStyle: TextStyle(
@@ -65,28 +64,29 @@ class _SelectedCurrencyScreenState extends State<SelectedCurrencyScreen> {
                   ),
                 )),
           ),
-          Spacer(flex: 1,),
+          Spacer(
+            flex: 1,
+          ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-
                 Container(
-                  width: MediaQuery.of(context).size.width*0.8,
+                  width: MediaQuery.of(context).size.width * 0.8,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(8))),
                   child: Padding(
-                    padding: const EdgeInsets.only(left:8.0),
+                    padding: const EdgeInsets.only(left: 8.0),
                     child: TextField(
                       controller: _selectedCurrencyController,
                       decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: " Currency code(INR, USD, EUR...)",
-                          errorText: _inValid ? errMsg : "",
-                          ),
+                        border: InputBorder.none,
+                        hintText: " Currency code(INR, USD, EUR...)",
+                        errorText: _inValid ? errMsg : "",
+                      ),
                     ),
                   ),
                 ),
@@ -97,19 +97,22 @@ class _SelectedCurrencyScreenState extends State<SelectedCurrencyScreen> {
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    String selectedCurrency = _selectedCurrencyController.text.toUpperCase();
-                    if (Util.validateCurrency(selectedCurrency) && selectedCurrency!=currencyInventory.baseCurrency) {
+                    String selectedCurrency =
+                        _selectedCurrencyController.text.toUpperCase();
+                    if (Util.validateCurrency(selectedCurrency) &&
+                        selectedCurrency != currencyInventory.baseCurrency) {
                       Set<String> compareCurrencyList =
                           currencyInventory.selectedCurrency;
-                      compareCurrencyList.add(_selectedCurrencyController.text.toUpperCase());
+                      compareCurrencyList
+                          .add(_selectedCurrencyController.text.toUpperCase());
                       _selectedCurrencyController.clear();
                     } else {
                       setState(() {
                         _inValid = true;
                         errMsg =
-                            selectedCurrency==currencyInventory.baseCurrency
-                            ? "Cannot be the same as base currency" :
-                              "Enter valid currency to compare";
+                            selectedCurrency == currencyInventory.baseCurrency
+                                ? "Cannot be the same as base currency"
+                                : "Enter valid currency to compare";
                       });
                     }
                   },
@@ -117,7 +120,9 @@ class _SelectedCurrencyScreenState extends State<SelectedCurrencyScreen> {
               ],
             ),
           ),
-          Spacer(flex: 1,),
+          Spacer(
+            flex: 1,
+          ),
           FlatButton(
             child: Text("Next",
                 style: GoogleFonts.lato(
@@ -126,26 +131,31 @@ class _SelectedCurrencyScreenState extends State<SelectedCurrencyScreen> {
                   fontSize: 25,
                 ))),
             onPressed: () {
-              String selectedCurrency = _selectedCurrencyController.text.toUpperCase();
+              String selectedCurrency =
+                  _selectedCurrencyController.text.toUpperCase();
               Set<String> compareCurrencyList =
                   currencyInventory.selectedCurrency;
-              if (Util.validateCurrency(selectedCurrency) && selectedCurrency!=currencyInventory.baseCurrency) {
-                compareCurrencyList.add(_selectedCurrencyController.text.toUpperCase());
+              if (Util.validateCurrency(selectedCurrency) &&
+                  selectedCurrency != currencyInventory.baseCurrency) {
+                compareCurrencyList
+                    .add(_selectedCurrencyController.text.toUpperCase());
                 Navigator.pushNamed(context, Router.resultRoute);
                 _selectedCurrencyController.clear();
-              } else if (selectedCurrency.isEmpty && compareCurrencyList.isNotEmpty) {
+              } else if (selectedCurrency.isEmpty &&
+                  compareCurrencyList.isNotEmpty) {
                 Navigator.pushNamed(context, Router.resultRoute);
                 _selectedCurrencyController.clear();
-              } else if( selectedCurrency==currencyInventory.baseCurrency) {
+              } else if (selectedCurrency == currencyInventory.baseCurrency) {
                 setState(() {
                   _inValid = true;
                   errMsg = "Cannot be the same as base currency";
                 });
-              }
-              else {
+              } else {
                 setState(() {
                   _inValid = true;
-                  errMsg = compareCurrencyList.isEmpty ? "Enter atleast one currency to compare" : "Enter Valid currency";
+                  errMsg = compareCurrencyList.isEmpty
+                      ? "Enter atleast one currency to compare"
+                      : "Enter Valid currency";
                 });
               }
             },
@@ -154,5 +164,11 @@ class _SelectedCurrencyScreenState extends State<SelectedCurrencyScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _selectedCurrencyController.dispose();
+    super.dispose();
   }
 }

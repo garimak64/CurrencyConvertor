@@ -5,7 +5,6 @@ import 'package:currencyconvertor/screen/selected_currency_screen.dart';
 import 'package:flutter/material.dart';
 
 class Router {
-
   static const String loginPageRoute = '/';
   static const String baseCurrencyRoute = '/baseCurrency';
   static const String selectedCurrencyRoute = '/selectedCurrency';
@@ -25,10 +24,9 @@ class Router {
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
-              body: Center(
-                  child: Text('No route defined for ${settings.name}')),
-            ));
+                  body: Center(
+                      child: Text('No route defined for ${settings.name}')),
+                ));
     }
-
   }
 }

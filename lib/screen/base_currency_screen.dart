@@ -1,6 +1,4 @@
-import 'package:currencyconvertor/screen/result_screen.dart';
 import 'package:currencyconvertor/route/router.dart';
-import 'package:currencyconvertor/screen/selected_currency_screen.dart';
 import 'package:currencyconvertor/provider/currency_inventory.dart';
 import 'package:currencyconvertor/util/util.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +17,8 @@ class _BaseCurrencyScreenState extends State<BaseCurrencyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    CurrencyInventory currencyInventory = Provider.of<CurrencyInventory>(context);
+    CurrencyInventory currencyInventory =
+        Provider.of<CurrencyInventory>(context);
 
     return Scaffold(
       backgroundColor: Colors.indigo,
@@ -33,7 +32,9 @@ class _BaseCurrencyScreenState extends State<BaseCurrencyScreen> {
                 color: Colors.white,
                 fontSize: 35,
               ))),
-          Spacer(flex: 1,),
+          Spacer(
+            flex: 1,
+          ),
           Text("CURRENCY CONVERTER",
               style: GoogleFonts.mcLaren(
                   textStyle: TextStyle(
@@ -42,18 +43,15 @@ class _BaseCurrencyScreenState extends State<BaseCurrencyScreen> {
               ))),
           Spacer(flex: 3),
           Padding(
-            padding: const EdgeInsets.only(right:160.0),
+            padding: const EdgeInsets.only(right: 160.0),
             child: Text("Select your base",
                 style: GoogleFonts.lato(
-                    textStyle: TextStyle(
-
-                  color: Colors.white,
-                  fontSize: 20,
-
-                ),)),
+                  textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
+                )),
           ),
-
-
           Padding(
             padding: const EdgeInsets.all(18.0),
             child: Container(
@@ -61,19 +59,21 @@ class _BaseCurrencyScreenState extends State<BaseCurrencyScreen> {
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(8))),
               child: Padding(
-                padding: const EdgeInsets.only(left:8.0),
+                padding: const EdgeInsets.only(left: 8.0),
                 child: TextField(
                   controller: _baseCurrencyController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                      hintText: "  Currency code(INR, USD, EUR...)",
-                      errorText: _inValid ? "Enter valid value" : null,
-                      ),
+                    hintText: "  Currency code(INR, USD, EUR...)",
+                    errorText: _inValid ? "Enter valid value" : null,
+                  ),
                 ),
               ),
             ),
           ),
-          Spacer(flex: 1,),
+          Spacer(
+            flex: 1,
+          ),
           FlatButton(
             child: Text("Next",
                 style: GoogleFonts.lato(
@@ -82,26 +82,27 @@ class _BaseCurrencyScreenState extends State<BaseCurrencyScreen> {
                   fontSize: 25,
                 ))),
             onPressed: () {
-
-              if(!Util.validateCurrency(_baseCurrencyController.text)){
+              if (!Util.validateCurrency(_baseCurrencyController.text)) {
                 setState(() {
-                  _inValid=true;
-
+                  _inValid = true;
                 });
-              } else{
-                currencyInventory.setBaseCurrency(_baseCurrencyController.text.toUpperCase());
+              } else {
+                currencyInventory.setBaseCurrency(
+                    _baseCurrencyController.text.toUpperCase());
                 Navigator.pushNamed(context, Router.selectedCurrencyRoute);
                 _baseCurrencyController.clear();
               }
-
             },
           ),
-          Spacer(flex:4)
+          Spacer(flex: 4)
         ],
       ),
     );
   }
 
-
-
+  @override
+  void dispose() {
+    _baseCurrencyController.dispose();
+    super.dispose();
+  }
 }

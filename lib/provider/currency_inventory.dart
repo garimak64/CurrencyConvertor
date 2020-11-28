@@ -18,15 +18,14 @@ class CurrencyInventory with ChangeNotifier {
   }
 
   Set<String> get selectedCurrency {
-    if(_selectedCurrency == null) {
+    if (_selectedCurrency == null) {
       _selectedCurrency = Set();
     }
     return _selectedCurrency;
   }
 
   setSelectedCurrency(Set<String> value) {
-    if(_selectedCurrency.contains(_baseCurrency))
-      value.remove(_baseCurrency);
+    if (_selectedCurrency.contains(_baseCurrency)) value.remove(_baseCurrency);
     _selectedCurrency = value;
 
     notifyListeners();

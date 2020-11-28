@@ -15,9 +15,7 @@ class LoginScreen extends StatefulWidget {
 class LoginScreenState extends State<LoginScreen> {
   GoogleSignIn _googleSignIn = GoogleSignIn();
   FirebaseAuth _auth;
-
   bool _isUserSignedIn = false;
-
 
   @override
   void initState() {
@@ -42,13 +40,16 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    CurrencyInventory currencyInventory = Provider.of<CurrencyInventory>(context);
+    CurrencyInventory currencyInventory =
+        Provider.of<CurrencyInventory>(context);
     currencyInventory.setGoogleAccount(_googleSignIn);
     return Scaffold(
         backgroundColor: Colors.indigo,
         body: Column(
           children: <Widget>[
-            Spacer(flex: 2,),
+            Spacer(
+              flex: 2,
+            ),
             Center(
               child: Text("SIVISOFT",
                   style: GoogleFonts.mcLaren(
@@ -57,39 +58,48 @@ class LoginScreenState extends State<LoginScreen> {
                     fontSize: 35,
                   ))),
             ),
-            Spacer(flex: 1,),
+            Spacer(
+              flex: 1,
+            ),
             Text("CURRENCY CONVERTER",
                 style: GoogleFonts.mcLaren(
                     textStyle: TextStyle(
                   color: Colors.white,
                   fontSize: 25,
                 ))),
-            Spacer(flex: 4,),
-            Padding(
-              padding: const EdgeInsets.only(left:40.0,right: 40.0),
-              child: FlatButton(
-                  onPressed: () {
-                    onGoogleSignIn(context);
-                  },
-                  color: Colors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Image(image: AssetImage("assets/images/google_logo.png"), height: 25.0),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: Text(
-                          _isUserSignedIn ? 'Signed in' : 'Sign in',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),),
+            Spacer(
+              flex: 4,
             ),
-            Spacer(flex: 8,),
+            Padding(
+              padding: const EdgeInsets.only(left: 40.0, right: 40.0),
+              child: FlatButton(
+                onPressed: () {
+                  onGoogleSignIn(context);
+                },
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Image(
+                        image: AssetImage("assets/images/google_logo.png"),
+                        height: 25.0),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Text(
+                        _isUserSignedIn ? 'Signed in' : 'Sign in',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Spacer(
+              flex: 8,
+            ),
           ],
         ));
   }
@@ -134,5 +144,11 @@ class LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isUserSignedIn = userSignedIn == null ? true : false;
     });
+  }
+
+  @override
+  void dispose() {
+    _googleSignIn.disconnect();
+    super.dispose();
   }
 }
