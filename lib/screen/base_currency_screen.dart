@@ -1,7 +1,7 @@
 import 'package:currencyconvertor/screen/result_screen.dart';
 import 'package:currencyconvertor/route/router.dart';
 import 'package:currencyconvertor/screen/selected_currency_screen.dart';
-import 'package:currencyconvertor/provider/currency_inventory.dart';
+import 'package:currencyconvertor/provider/app_state.dart';
 import 'package:currencyconvertor/util/util.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,7 +19,7 @@ class _BaseCurrencyScreenState extends State<BaseCurrencyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    CurrencyInventory currencyInventory = Provider.of<CurrencyInventory>(context);
+    AppState appState = Provider.of<AppState>(context);
 
     return Scaffold(
       backgroundColor: Colors.indigo,
@@ -89,7 +89,7 @@ class _BaseCurrencyScreenState extends State<BaseCurrencyScreen> {
 
                 });
               } else{
-                currencyInventory.setBaseCurrency(_baseCurrencyController.text.toUpperCase());
+                appState.setBaseCurrency(_baseCurrencyController.text.toUpperCase());
                 Navigator.pushNamed(context, Router.selectedCurrencyRoute);
                 _baseCurrencyController.clear();
               }

@@ -1,32 +1,30 @@
 import 'package:currencyconvertor/api/exchange_api.dart';
 import 'package:currencyconvertor/modal/exchange_modal.dart';
-import 'package:currencyconvertor/provider/currency_inventory.dart';
+import 'package:currencyconvertor/provider/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
-class ResultScreen extends StatelessWidget {
-  Future<Exchange> getData(CurrencyInventory currencyInventory) {
-    return ExchangeApi().fetchExchange(currencyInventory.baseCurrency);
+class ResultScreen extends StatefulWidget {
+  @override
+  _ResultScreenState createState() => _ResultScreenState();
+}
+
+class _ResultScreenState extends State<ResultScreen> {
+
+  Future<Exchange> getData(AppState appState) {
+    return ExchangeApi().fetchExchange(appState.baseCurrency);
   }
 
-  void refreshData(CurrencyInventory currencyInventory) async {
-    Exchange exchange =
-        await ExchangeApi().fetchExchange(currencyInventory.baseCurrency);
-    currencyInventory.selectedCurrency.forEach((element) {
-      exchange.getExchangeRate(element);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    CurrencyInventory currencyInventory =
-        Provider.of<CurrencyInventory>(context);
+    AppState appState = Provider.of<AppState>(context);
     return Scaffold(
       backgroundColor: Colors.indigo,
       body: FutureBuilder<Exchange>(
-          future: getData(currencyInventory),
-          //snapshot of the context/getData
+          future: getData(appState),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
@@ -46,7 +44,7 @@ class ResultScreen extends StatelessWidget {
                   );
                 } else {
                   List<String> compareCurrencyList =
-                      currencyInventory.selectedCurrency.toList();
+                  appState.selectedCurrency.toList();
                   compareCurrencyList.sort();
 
                   return Column(
@@ -78,7 +76,7 @@ class ResultScreen extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: () {
-                              getData(currencyInventory);
+//                              setState(() {});
                             },
                             child: Text("Refresh",
                                 style: GoogleFonts.mcLaren(
@@ -96,11 +94,10 @@ class ResultScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-
                             Text(
-                              currencyInventory.baseCurrency +
+                              appState.baseCurrency +
                                   " Value: 1 " +
-                                  currencyInventory.baseCurrency,
+                                  appState.baseCurrency,
                               style: TextStyle(color: Colors.white, fontSize: 18,
                               fontWeight: FontWeight.bold),
                             ),
@@ -177,12 +174,19 @@ class ResultScreen extends StatelessWidget {
                       ),
                       Spacer(flex: 3),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          GoogleSignIn _googleSignIn = GoogleSignIn();
+                          _googleSignIn.signOut();
+                          appState.setIsUserSignedIn(false);
+                          Navigator.popUntil(context, (route) => route.isFirst);
+                        },
                         child: Text(
                           "Logout",
                           style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
-                      )
+                      ),
+                      Spacer(),
+
                     ],
                   );
                 }

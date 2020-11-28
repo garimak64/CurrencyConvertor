@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 
-class CurrencyInventory with ChangeNotifier {
+class AppState with ChangeNotifier {
   String _baseCurrency;
+  bool _isUserSignedIn = false;
   Set<String> _selectedCurrency;
+
+  bool getIsUserSignedIn() => _isUserSignedIn;
+
+  setIsUserSignedIn(bool value) {
+    _isUserSignedIn = value;
+    notifyListeners();
+  }
 
   String get baseCurrency => _baseCurrency;
 

@@ -1,5 +1,5 @@
 import 'package:currencyconvertor/route/router.dart';
-import 'package:currencyconvertor/provider/currency_inventory.dart';
+import 'package:currencyconvertor/provider/app_state.dart';
 import 'package:currencyconvertor/util/util.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,8 +20,8 @@ class _SelectedCurrencyScreenState extends State<SelectedCurrencyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    CurrencyInventory currencyInventory =
-        Provider.of<CurrencyInventory>(context);
+    AppState appState =
+        Provider.of<AppState>(context);
     return Scaffold(
       backgroundColor: Colors.indigo,
       key: scaffoldKey,
@@ -45,7 +45,7 @@ class _SelectedCurrencyScreenState extends State<SelectedCurrencyScreen> {
           Spacer(flex: 2),
           Padding(
             padding: const EdgeInsets.only(right:140.0),
-            child: Text("Base Currency: " + currencyInventory.baseCurrency,
+            child: Text("Base Currency: " + appState.baseCurrency,
                 style: GoogleFonts.lato(
                   textStyle: TextStyle(
                     color: Colors.white,
@@ -98,16 +98,16 @@ class _SelectedCurrencyScreenState extends State<SelectedCurrencyScreen> {
                   ),
                   onPressed: () {
                     String selectedCurrency = _selectedCurrencyController.text.toUpperCase();
-                    if (Util.validateCurrency(selectedCurrency) && selectedCurrency!=currencyInventory.baseCurrency) {
+                    if (Util.validateCurrency(selectedCurrency) && selectedCurrency!=appState.baseCurrency) {
                       Set<String> compareCurrencyList =
-                          currencyInventory.selectedCurrency;
+                          appState.selectedCurrency;
                       compareCurrencyList.add(_selectedCurrencyController.text.toUpperCase());
                       _selectedCurrencyController.clear();
                     } else {
                       setState(() {
                         _inValid = true;
                         errMsg =
-                            selectedCurrency==currencyInventory.baseCurrency
+                            selectedCurrency==appState.baseCurrency
                             ? "Cannot be the same as base currency" :
                               "Enter valid currency to compare";
                       });
@@ -128,15 +128,15 @@ class _SelectedCurrencyScreenState extends State<SelectedCurrencyScreen> {
             onPressed: () {
               String selectedCurrency = _selectedCurrencyController.text.toUpperCase();
               Set<String> compareCurrencyList =
-                  currencyInventory.selectedCurrency;
-              if (Util.validateCurrency(selectedCurrency) && selectedCurrency!=currencyInventory.baseCurrency) {
+                  appState.selectedCurrency;
+              if (Util.validateCurrency(selectedCurrency) && selectedCurrency!=appState.baseCurrency) {
                 compareCurrencyList.add(_selectedCurrencyController.text.toUpperCase());
                 Navigator.pushNamed(context, Router.resultRoute);
                 _selectedCurrencyController.clear();
               } else if (selectedCurrency.isEmpty && compareCurrencyList.isNotEmpty) {
                 Navigator.pushNamed(context, Router.resultRoute);
                 _selectedCurrencyController.clear();
-              } else if( selectedCurrency==currencyInventory.baseCurrency) {
+              } else if( selectedCurrency==appState.baseCurrency) {
                 setState(() {
                   _inValid = true;
                   errMsg = "Cannot be the same as base currency";

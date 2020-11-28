@@ -1,9 +1,11 @@
+import 'package:currencyconvertor/provider/app_state.dart';
 import 'package:currencyconvertor/route/router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -14,7 +16,7 @@ class LoginScreenState extends State<LoginScreen> {
   GoogleSignIn _googleSignIn = GoogleSignIn();
   FirebaseAuth _auth;
 
-  bool isUserSignedIn = false;
+
 
   @override
   void initState() {
@@ -26,19 +28,18 @@ class LoginScreenState extends State<LoginScreen> {
   void initApp() async {
     FirebaseApp defaultApp = await Firebase.initializeApp();
     _auth = FirebaseAuth.instanceFor(app: defaultApp);
-    checkIfUserIsSignedIn();
   }
 
-  void checkIfUserIsSignedIn() async {
-    var userSignedIn = await _googleSignIn.isSignedIn();
+  void checkIfUserIsSignedIn(AppState appState) async {
+    bool userSignedIn = await _googleSignIn.isSignedIn();
+    appState.setIsUserSignedIn(userSignedIn);
 
-    setState(() {
-      isUserSignedIn = userSignedIn;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    AppState appState = Provider.of<AppState>(context);
+    checkIfUserIsSignedIn(appState);
     return Scaffold(
         backgroundColor: Colors.indigo,
         body: Column(
@@ -64,7 +65,7 @@ class LoginScreenState extends State<LoginScreen> {
               padding: const EdgeInsets.only(left:40.0,right: 40.0),
               child: FlatButton(
                   onPressed: () {
-                    onGoogleSignIn(context);
+                    onGoogleSignIn(context, appState);
                   },
                   color: Colors.white,
                   child: Row(
@@ -74,7 +75,7 @@ class LoginScreenState extends State<LoginScreen> {
                       Padding(
                         padding: const EdgeInsets.only(left: 20),
                         child: Text(
-                          isUserSignedIn ? 'Signed in' : 'Sign in',
+                          appState.getIsUserSignedIn() ? 'Signed in' : 'Sign in',
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.grey[600],
@@ -89,15 +90,11 @@ class LoginScreenState extends State<LoginScreen> {
         ));
   }
 
-  Future<User> _handleSignIn() async {
+  Future<User> _handleSignIn(AppState appState) async {
     User user;
     bool userSignedIn = await _googleSignIn.isSignedIn();
-
-    setState(() {
-      isUserSignedIn = userSignedIn;
-    });
-
-    if (isUserSignedIn) {
+    appState.setIsUserSignedIn(userSignedIn);
+    if (userSignedIn) {
       user = _auth.currentUser;
     } else {
       final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
@@ -111,23 +108,20 @@ class LoginScreenState extends State<LoginScreen> {
 
       user = (await _auth.signInWithCredential(credential)).user;
       userSignedIn = await _googleSignIn.isSignedIn();
-      setState(() {
-        isUserSignedIn = userSignedIn;
-      });
+      appState.setIsUserSignedIn(userSignedIn);
     }
 
     return user;
   }
 
-  void onGoogleSignIn(BuildContext context) async {
-    await _handleSignIn();
+  void onGoogleSignIn(BuildContext context, AppState appState) async {
+    await _handleSignIn(appState);
     var userSignedIn = await Navigator.pushNamed(
       context,
       Router.baseCurrencyRoute,
     );
+    appState.setIsUserSignedIn(userSignedIn == null);
 
-    setState(() {
-      isUserSignedIn = userSignedIn == null ? true : false;
-    });
+
   }
 }
