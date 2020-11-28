@@ -3,19 +3,17 @@ import 'package:currencyconvertor/modal/exchange_modal.dart';
 import 'package:currencyconvertor/provider/currency_inventory.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
-class ResultScreen extends StatelessWidget {
+class ResultScreen extends StatefulWidget {
+  @override
+  _ResultScreenState createState() => _ResultScreenState();
+}
+
+class _ResultScreenState extends State<ResultScreen> {
   Future<Exchange> getData(CurrencyInventory currencyInventory) {
     return ExchangeApi().fetchExchange(currencyInventory.baseCurrency);
-  }
-
-  void refreshData(CurrencyInventory currencyInventory) async {
-    Exchange exchange =
-        await ExchangeApi().fetchExchange(currencyInventory.baseCurrency);
-    currencyInventory.selectedCurrency.forEach((element) {
-      exchange.getExchangeRate(element);
-    });
   }
 
   @override
@@ -77,9 +75,7 @@ class ResultScreen extends StatelessWidget {
                             color: Colors.white,
                           ),
                           GestureDetector(
-                            onTap: () {
-                              getData(currencyInventory);
-                            },
+                            onTap: () => setState(() {}),
                             child: Text("Refresh",
                                 style: GoogleFonts.mcLaren(
                                     textStyle: TextStyle(
@@ -177,12 +173,17 @@ class ResultScreen extends StatelessWidget {
                       ),
                       Spacer(flex: 3),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          GoogleSignIn signIn = new GoogleSignIn();
+                          signIn.signOut();
+                          Navigator.popUntil(context, (route) => route.isFirst);
+                        },
                         child: Text(
                           "Logout",
                           style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
-                      )
+                      ),
+                      Spacer(),
                     ],
                   );
                 }

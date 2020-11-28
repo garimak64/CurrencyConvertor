@@ -14,7 +14,8 @@ class LoginScreenState extends State<LoginScreen> {
   GoogleSignIn _googleSignIn = GoogleSignIn();
   FirebaseAuth _auth;
 
-  bool isUserSignedIn = false;
+  bool _isUserSignedIn = false;
+
 
   @override
   void initState() {
@@ -33,7 +34,7 @@ class LoginScreenState extends State<LoginScreen> {
     var userSignedIn = await _googleSignIn.isSignedIn();
 
     setState(() {
-      isUserSignedIn = userSignedIn;
+      _isUserSignedIn = userSignedIn;
     });
   }
 
@@ -74,7 +75,7 @@ class LoginScreenState extends State<LoginScreen> {
                       Padding(
                         padding: const EdgeInsets.only(left: 20),
                         child: Text(
-                          isUserSignedIn ? 'Signed in' : 'Sign in',
+                          _isUserSignedIn ? 'Signed in' : 'Sign in',
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.grey[600],
@@ -94,10 +95,10 @@ class LoginScreenState extends State<LoginScreen> {
     bool userSignedIn = await _googleSignIn.isSignedIn();
 
     setState(() {
-      isUserSignedIn = userSignedIn;
+      _isUserSignedIn = userSignedIn;
     });
 
-    if (isUserSignedIn) {
+    if (_isUserSignedIn) {
       user = _auth.currentUser;
     } else {
       final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
@@ -112,7 +113,7 @@ class LoginScreenState extends State<LoginScreen> {
       user = (await _auth.signInWithCredential(credential)).user;
       userSignedIn = await _googleSignIn.isSignedIn();
       setState(() {
-        isUserSignedIn = userSignedIn;
+        _isUserSignedIn = userSignedIn;
       });
     }
 
@@ -127,7 +128,7 @@ class LoginScreenState extends State<LoginScreen> {
     );
 
     setState(() {
-      isUserSignedIn = userSignedIn == null ? true : false;
+      _isUserSignedIn = userSignedIn == null ? true : false;
     });
   }
 }
