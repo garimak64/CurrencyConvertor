@@ -19,7 +19,7 @@ class Exchange  {
   }
 
   double getExchangeRate(String code) {
-    double result = _rates[code] ?? 0.0;
+    double result = _rates[code] ?? 1.0;
     return double.parse(result.toString());
   }
 

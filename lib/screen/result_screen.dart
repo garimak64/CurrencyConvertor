@@ -174,8 +174,8 @@ class _ResultScreenState extends State<ResultScreen> {
                       Spacer(flex: 3),
                       GestureDetector(
                         onTap: () {
-                          GoogleSignIn signIn = new GoogleSignIn();
-                          signIn.signOut();
+                          GoogleSignIn googleAccount = currencyInventory.googleAccount;
+                          googleAccount.signOut();
                           Navigator.popUntil(context, (route) => route.isFirst);
                         },
                         child: Text(

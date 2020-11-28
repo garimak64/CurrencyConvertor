@@ -1,9 +1,11 @@
+import 'package:currencyconvertor/provider/currency_inventory.dart';
 import 'package:currencyconvertor/route/router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -40,6 +42,8 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    CurrencyInventory currencyInventory = Provider.of<CurrencyInventory>(context);
+    currencyInventory.setGoogleAccount(_googleSignIn);
     return Scaffold(
         backgroundColor: Colors.indigo,
         body: Column(
