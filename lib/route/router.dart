@@ -1,7 +1,7 @@
-import 'package:currencyconvertor/google_login.dart';
-import 'package:currencyconvertor/result.dart';
-import 'package:currencyconvertor/base_currency_screen.dart';
-import 'package:currencyconvertor/selected_currency_screen.dart';
+import 'package:currencyconvertor/screen/login_screen.dart';
+import 'package:currencyconvertor/screen/result_screen.dart';
+import 'package:currencyconvertor/screen/base_currency_screen.dart';
+import 'package:currencyconvertor/screen/selected_currency_screen.dart';
 import 'package:flutter/material.dart';
 
 class Router {
@@ -14,13 +14,13 @@ class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case loginPageRoute:
-        return MaterialPageRoute(builder: (_) => LoginPageWidget());
+        return MaterialPageRoute(builder: (_) => LoginScreen());
       case baseCurrencyRoute:
         return MaterialPageRoute(builder: (_) => BaseCurrencyScreen());
       case selectedCurrencyRoute:
         return MaterialPageRoute(builder: (_) => SelectedCurrencyScreen());
       case resultRoute:
-        return MaterialPageRoute(builder: (_) => Result());
+        return MaterialPageRoute(builder: (_) => ResultScreen());
 
       default:
         return MaterialPageRoute(

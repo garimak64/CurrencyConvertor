@@ -18,15 +18,19 @@ class Exchange  {
     );
   }
 
-  double getExchangeRate(String code) => double.parse(_rates[code].toString());
-
-  @override
-  String toString() {
-    // TODO: implement toString
-    return "Exchange : ["
-        "$_base,"
-        "$_date,"
-        "$_rates,"
-        "$_error]";
+  double getExchangeRate(String code) {
+    double result = _rates[code] ?? 0.0;
+    return double.parse(result.toString());
   }
+
+    @override
+    String toString() {
+      // TODO: implement toString
+      return "Exchange : ["
+          "$_base,"
+          "$_date,"
+          "$_rates,"
+          "$_error]";
+    }
+
 }

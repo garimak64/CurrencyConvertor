@@ -3,7 +3,7 @@ class Util {
 
   static bool validateCurrency(String currency) {
     if (currency == null || currency.trim().isEmpty) return false;
-    return _validCurrencies.contains(currency);
+    return _validCurrencies.contains(currency.toUpperCase());
   }
 
 

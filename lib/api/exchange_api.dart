@@ -1,6 +1,6 @@
 
 import 'dart:convert';
-import 'exchange_modal.dart';
+import '../modal/exchange_modal.dart';
 import 'package:http/http.dart' as http;
 
 class ExchangeApi {

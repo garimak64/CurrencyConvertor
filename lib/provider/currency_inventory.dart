@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CurrencyConfig with ChangeNotifier {
+class CurrencyInventory with ChangeNotifier {
   String _baseCurrency;
   Set<String> _selectedCurrency;
 
@@ -11,10 +11,18 @@ class CurrencyConfig with ChangeNotifier {
     notifyListeners();
   }
 
-  Set<String> get selectedCurrency => _selectedCurrency;
+  Set<String> get selectedCurrency {
+    if(_selectedCurrency == null) {
+      _selectedCurrency = Set();
+    }
+    return _selectedCurrency;
+  }
 
   setSelectedCurrency(Set<String> value) {
+    if(_selectedCurrency.contains(_baseCurrency))
+      value.remove(_baseCurrency);
     _selectedCurrency = value;
+
     notifyListeners();
   }
 }
